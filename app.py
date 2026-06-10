@@ -26,38 +26,30 @@ COR_PRINCIPAL = [PALETA_CATEGORICA[0]]
 @st.cache_data
 def load_data():
     try:
-        import os
         import pandas as pd
         import streamlit as st
 
-        arquivos = os.listdir('.')
-        arquivo_encontrado = None
+        df = pd.read_csv('datatran_2022_2026_processed_v1.csv')
         
-        for f in arquivos:
-            if 'datatran' in f and f.endswith('.csv'):
-                arquivo_encontrado = f
-                break
-
-        if arquivo_encontrado:
-            tamanho_bytes = os.path.getsize(arquivo_encontrado)
-            if tamanho_bytes < 1000:
-                st.error(f" O arquivo '{arquivo_encontrado}' foi encontrado, mas está quebrado ou comprimido incorretamente pelo Git LFS. Tamanho: {tamanho_bytes} bytes.")
-                with open(arquivo_encontrado, 'r') as f_test:
-                    st.code(f_test.read(200), language='text')
-                return pd.DataFrame()
-
-            df = pd.read_csv(arquivo_encontrado)
-            df['data_hora'] = pd.to_datetime(df['data_hora'], errors='coerce')
-            df['ano'] = df['data_hora'].dt.year
-            df['hora'] = df['data_hora'].dt.hour
-            df['dia_semana'] = df['data_hora'].dt.day_name(locale='pt_BR.utf8') if hasattr(df['data_hora'].dt, 'day_name') else df['data_hora'].dt.dayofweek
-            return df
-        else:
-            st.error("Nenhum arquivo contendo 'datatran' e terminação '.csv' foi localizado no diretório.")
-            return pd.DataFrame()
+        df['data_hora'] = pd.to_datetime(df['data_hora'], errors='coerce')
+        df['ano'] = df['data_hora'].dt.year
+        df['hora'] = df['data_hora'].dt.hour
+        
+        dias_traduzidos = {
+            0: 'Segunda', 
+            1: 'Terça', 
+            2: 'Quarta',
+            3: 'Quinta', 
+            4: 'Sexta', 
+            5: 'Sábado', 
+            6: 'Domingo'
+        }
+        df['dia_semana'] = df['data_hora'].dt.dayofweek.map(dias_traduzidos)
             
+        return df
+        
     except Exception as e:
-        st.error(f"Erro interno do Python ao processar o arquivo: {e}")
+        st.error(f"Erro: {e}")
         return pd.DataFrame()
 
 data = load_data()

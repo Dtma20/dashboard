@@ -1,9 +1,10 @@
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
-
 
 # ---------------------------------------------------------------------------
 # Config
@@ -49,8 +50,8 @@ st.markdown(
 PALETA = ["#60A5FA", "#FBBF24", "#34D399", "#F87171", "#A78BFA", "#3B82F6", "#94A3B8"]
 COR_1 = [PALETA[0]]
 
-DATA_PATH = "datatran_2022_2026_processed_v1.csv"
-FIGURES_DIR = "figures"
+DATA_PATH = Path("datatran_2022_2026_processed_v1.csv")
+FIGURES_DIR = Path("figures")
 
 _ORDEM_HORARIO = ["Madrugada", "Manhã", "Tarde", "Noite"]
 _ORDEM_SEMANA = [

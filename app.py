@@ -127,12 +127,6 @@ def hyp_card(titulo: str, badge_html: str) -> None:
 # ---------------------------------------------------------------------------
 # Sidebar: navegação
 # ---------------------------------------------------------------------------
-st.sidebar.image(
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/"
-    "Bras%C3%A3o_da_Pol%C3%ADcia_Rodovi%C3%A1ria_Federal.svg/"
-    "1200px-Bras%C3%A3o_da_Pol%C3%ADcia_Rodovi%C3%A1ria_Federal.svg.png",
-    width=140,
-)
 st.sidebar.title("Navegação")
 PAGES = {
     "Visão Geral": "geral",

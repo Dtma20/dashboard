@@ -28,21 +28,21 @@ def load_data():
     try:
         import pandas as pd
         import streamlit as st
+        import os
 
-        df = pd.read_csv('datatran_2022_2026_processed_v1.csv')
+        if os.path.getsize('datatran_2022_2026_processed_v1.csv') == 0:
+            st.error("O arquivo está vazio.")
+            return pd.DataFrame()
+
+        df = pd.read_csv('datatran_2022_2026_processed_v1.csv', sep=None, engine='python')
         
         df['data_hora'] = pd.to_datetime(df['data_hora'], errors='coerce')
         df['ano'] = df['data_hora'].dt.year
         df['hora'] = df['data_hora'].dt.hour
         
         dias_traduzidos = {
-            0: 'Segunda', 
-            1: 'Terça', 
-            2: 'Quarta',
-            3: 'Quinta', 
-            4: 'Sexta', 
-            5: 'Sábado', 
-            6: 'Domingo'
+            0: 'Segunda', 1: 'Terça', 2: 'Quarta',
+            3: 'Quinta', 4: 'Sexta', 5: 'Sábado', 6: 'Domingo'
         }
         df['dia_semana'] = df['data_hora'].dt.dayofweek.map(dias_traduzidos)
             

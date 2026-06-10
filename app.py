@@ -26,13 +26,19 @@ COR_PRINCIPAL = [PALETA_CATEGORICA[0]]
 @st.cache_data
 def load_data():
     try:
-        df = pd.read_csv('datatran_2022_2026_processed_v1.csv')
+        df = pd.read_csv('data/processed/datatran_2022_2026_processed_v1.csv')
         df['data_hora'] = pd.to_datetime(df['data_hora'], errors='coerce')
         df['ano'] = df['data_hora'].dt.year
         df['hora'] = df['data_hora'].dt.hour
-        df['dia_semana'] = df['data_hora'].dt.day_name(locale='pt_BR.utf8') if hasattr(df['data_hora'].dt, 'day_name') else df['data_hora'].dt.dayofweek
+        if hasattr(df['data_hora'].dt, 'day_name'):
+            df['dia_semana'] = df['data_hora'].dt.day_name(locale='pt_BR.utf8')
+        else:
+            df['dia_semana'] = df['data_hora'].dt.dayofweek
         return df
-    except Exception:
+    except Exception as e:
+        st.error(f"Erro interno do Python: {e}")
+        import os
+        st.code(f"Diretório atual: {os.getcwd()}\nConteúdo: {os.listdir('.')}")
         return pd.DataFrame()
 
 data = load_data()

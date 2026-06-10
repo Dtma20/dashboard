@@ -26,7 +26,7 @@ COR_PRINCIPAL = [PALETA_CATEGORICA[0]]
 @st.cache_data
 def load_data():
     try:
-        df = pd.read_csv('"C:\Users\diogo\Documents\prf-analise-sinistros\data\processed\datatran_2022_2026_processed_v1.csv"')
+        df = pd.read_csv('data/processed/datatran_2022_2026_processed_v1.csv')
         df['data_hora'] = pd.to_datetime(df['data_hora'], errors='coerce')
         df['ano'] = df['data_hora'].dt.year
         df['hora'] = df['data_hora'].dt.hour
